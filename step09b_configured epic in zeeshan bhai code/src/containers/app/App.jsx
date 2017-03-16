@@ -54,7 +54,9 @@ function mapDispatchToProps(dispatch) {
         incrementWithValue : function (value){
           console.log("Incrementing with value");
           return dispatch(CounterAction.incrementWithValue(value));
-        }
+        },
+	    asyncIncrement: () => { dispatch(CounterAction.asyncIncrement()) },
+	    asyncDecrement: () => { dispatch(CounterAction.asyncDecrement()) },
     };
 }
 
@@ -83,7 +85,8 @@ class App extends Component {
               
               <button onClick={this.props.decrement}>Decrement value with 4</button><br/>
               <button onClick={this.props.incrementAgain}>Increment value with 3</button><br/>
-              
+              <button onClick={this.props.asyncDecrement}>Async Decrement</button><br />
+              <button onClick={this.props.asyncIncrement}>Async Increment</button><br />
             </div>
         </div>      
       </div>

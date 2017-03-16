@@ -7,6 +7,9 @@ export default class CounterAction {
     static INCREMENT_WITH_VALUE = "INCREMENT_WITH_VALUE";
     static DECREMENT_WITH_VALUE = "DECREMENT_WITH_VALUE";
 
+    static INCREMENT_ASYNC = "INCREMENT_ASYNC";
+    static DECREMENT_ASYNC = "DECREMENT_ASYNC";
+
     // static functions to be mapped with dispatch in component
     static increment(){
         return { 
@@ -32,5 +35,13 @@ export default class CounterAction {
             type: 'DECREMENT_WITH_VALUE',
             val: value
         }
+    }
+
+    static asyncIncrement() {
+        console.log("inside action");
+        return { type: CounterAction.INCREMENT_ASYNC }
+    }
+    static asyncDecrement() {
+        return { type: CounterAction.INCREMENT_ASYNC }
     }
 }
