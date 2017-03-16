@@ -6,7 +6,6 @@ class AjaxEpic {
 
     getRepos = (action$) =>
         action$.ofType(ajaxAction.HTTPCALL)
-            .delay(1000) //this delay may be Async call to server or a database request
             .switchMap(({ payload }) => {
                 return api.getUserRepos(payload)
                     .switchMap(({ response }) => {
