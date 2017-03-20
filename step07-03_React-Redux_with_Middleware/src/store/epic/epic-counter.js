@@ -5,7 +5,6 @@ class CounterEpic {
 
     increment = (action$) =>
         action$.ofType(counterAction.INCREMENT_ASYNC)
-            .delay(1000) //this delay may be Async call to server or a database request
             .switchMap(({ payload }) => {
                 return Observable.of({
                     type: counterAction.INCREMENT,
