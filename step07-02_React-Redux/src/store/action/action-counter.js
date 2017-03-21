@@ -8,7 +8,7 @@ export class counterAction {
         return {
             type: counterAction.INCREMENT,
         }
-    }
+    }   
     static decrement = () => {
         return {
             type: counterAction.DECREMENT,
