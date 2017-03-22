@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux'
 import { ChatAction } from '../store/action/chat'
+import { ChatInput } from '../components/chatInputForm';
 
 function mapStateToProps(state) {
     return {
@@ -20,18 +21,11 @@ function mapDispatchToProps(dispatch) {
 class Chat extends Component<any, any> {
     constructor(props) {
         super(props)
-        this.sendMessage = this.sendMessage.bind(this);
         this.props.getMessages(); //start getting todo from firebase
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.isError) alert("Error Message: " + nextProps.errorMessage);
-    }
-
-    sendMessage(e) {
-        e.preventDefault();
-        this.props.addMessage(this.refs.newMessage["value"]);
-        this.refs.newMessage["value"] = "";
     }
 
     render() {
@@ -49,10 +43,9 @@ class Chat extends Component<any, any> {
                 <ul>
                     {/*{messagesList}*/}
                 </ul>
-                <form onSubmit={this.sendMessage}>
-                    <input type="text" placeholder="Your message here" ref="newMessage" />
-                    <button type="submit">Send</button>
-                </form>
+
+                <ChatInput sendMessage={this.props.addMessage}></ChatInput>
+
                 {(this.props.loading) ? <p>Sending...</p> : ""}
             </div>
         )
