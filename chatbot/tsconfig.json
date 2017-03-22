@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "target": "es5",
+        "jsx": "react"
+    },
+    "files": [
+        "./src/index.tsx",
+        "typings/main.d.ts"
+    ],
+    "exclude": [
+        "./node_modules",
+        "./dist"
+    ]
+}
