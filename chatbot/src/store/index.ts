@@ -3,25 +3,23 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 
 // Application State IAppState
 interface IAppState {
-    TodoReducer
+    ChatReducer
 }
 //requiring all reducers
-import { TodoReducer } from './reducer/todo';
+import { ChatReducer } from './reducer/chat';
 
 //requiring all epics
-import { TodoEpic } from './epic/todo';
+import { ChatEpic } from './epic/chat';
 
 //combine epic
 const rootEpic = combineEpics(
-    TodoEpic.addTodo,
-    TodoEpic.getTodos,
-    TodoEpic.getTodosCancel,
-    TodoEpic.markArchived,
-    TodoEpic.deleteTodo,
+    ChatEpic.addTodo,
+    ChatEpic.getTodos,
+    ChatEpic.getTodosCancel,
 );
 //combine reducers
 const rootReducer = combineReducers<IAppState>({
-    TodoReducer
+    ChatReducer
 })
 
 //creating middleware

@@ -7,8 +7,7 @@
         "jsx": "react"
     },
     "files": [
-        "./src/index.tsx",
-        "typings/main.d.ts"
+        "./src/index.tsx"
     ],
     "exclude": [
         "./node_modules",

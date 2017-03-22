@@ -1,80 +1,61 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux'
-import { TodoAction } from './store/action/todo'
+import { ChatAction } from './store/action/chat'
 
 function mapStateToProps(state) {
     return {
-        todos: state.TodoReducer.todos,
-        loading: state.TodoReducer.loading,
-        isError: state.TodoReducer.isError,
+        messages: state.ChatReducer.messages,
+        loading: state.ChatReducer.loading,
+        isError: state.ChatReducer.isError,
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getTodos:           (): void => dispatch(TodoAction.getTodos()),
-        getTodosCancel:     (): void => dispatch(TodoAction.getTodosCancel()),
-        addTodo:            (data): void => dispatch(TodoAction.addTodo(data)),
-        deleteTodo:         (data): void => dispatch(TodoAction.deleteTodo(data)),
-        markTodoArchived:   (data): void => dispatch(TodoAction.markTodoArchived(data)),
+        getMessages: (): void => dispatch(ChatAction.getMessages()),
+        addMessage: (message: string): void => dispatch(ChatAction.addMessage(message)),
     };
 }
 //React.Component<props, state>
-class Todo extends Component<any, any> {
+class Chat extends Component<any, any> {
     constructor(props) {
         super(props)
-        this.addTodo = this.addTodo.bind(this);
-        this.props.getTodos(); //start getting todo from firebase
+        this.sendMessage = this.sendMessage.bind(this);
+        this.props.getMessages(); //start getting todo from firebase
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.isError) alert("Error Message: " + nextProps.errorMessage);
     }
 
-    addTodo(e) {
+    sendMessage(e) {
         e.preventDefault();
-        this.props.addTodo({ todo: this.refs.todo["value"], isDone: false });
-        this.refs.todo["value"] = "";
-    }
-
-    toggleMarkArchived(key, isDone) {
-        this.props.markTodoArchived({ key: key, isDone: !isDone });
-    }
-
-    deleteTodo(key) {
-        this.props.deleteTodo({ key: key });
+        this.props.addMessage(this.refs.newMessage["value"]);
+        this.refs.newMessage["value"] = "";
     }
 
     render() {
-        let todoList = Object.keys(this.props.todos).map((key, index) => {
+        /*let messagesList = Object.keys(this.props.todos).map((key, index) => {
             let val = this.props.todos[key];
             return (
                 <li key={index}>
                     <h3> {val.todo}</h3>
-                    <p>
-                        {(val.isDone) ? <button onClick={() => { this.deleteTodo(key) }}>Delete</button> : ""}
-                        <button onClick={() => { this.toggleMarkArchived(key, val.isDone) }} >{val.isDone ? "Undo Archive" : "Mark Archive"}</button>
-                    </p>
                 </li>
             )
-        })
+        })*/
         return (
             <div>
-                <h2>Firebase Todo App using redux and redux-observable(epic)</h2>
+                <h2>Chat Bot</h2>
                 <ul>
-                    {todoList}
+                    {/*{messagesList}*/}
                 </ul>
-                <form onSubmit={this.addTodo}>
-                    <input type="text" placeholder="todo" ref="todo" /> <br />
-                    <button type="submit">Add Todo</button>
-
-                    <button onClick={this.props.getTodosCancel}>
-                        Cancel getting todo
-                    </button>
+                <form onSubmit={this.sendMessage}>
+                    <input type="text" placeholder="Your message here" ref="newMessage" />
+                    <button type="submit">Send</button>
                 </form>
-                {(this.props.loading) ? <p>Loading...</p> : ""}
+                {(this.props.loading) ? <p>Sending...</p> : ""}
             </div>
         )
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Todo)
+export default connect(mapStateToProps, mapDispatchToProps)(Chat)

@@ -2,7 +2,7 @@ import * as firebase from 'firebase'
 
 export class firebaseService {
 
-    static todoref = firebase.database().ref('todoApp/todo');
+    static todoref = firebase.database().ref('chatbot/messages');
 
     static signup(email: string, password: string): Promise<any> {
         return firebase.auth().createUserWithEmailAndPassword(email, password);
