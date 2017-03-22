@@ -2,13 +2,17 @@ import * as React from 'react';
 import { Component } from 'react';
 
 export interface ChatInputProps {
-    sendMessage(text: string)
+    sendMessage(text: { from: string, to: string, text: string })
 }
 export class ChatInput extends Component<ChatInputProps, any> {
 
     submitHandle(e) {
         e.preventDefault();
-        this.props.sendMessage(this.refs.newMessage["value"]);
+        this.props.sendMessage({
+            from: "zia",
+            to: "bot",
+            text: this.refs.newMessage["value"]
+        });
         this.refs.newMessage["value"] = "";
     }
     render() {

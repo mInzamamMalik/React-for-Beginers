@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
+import * as logger from 'redux-logger';
 
 // Application State IAppState
 interface IAppState {
@@ -26,7 +27,7 @@ const rootReducer = combineReducers<IAppState>({
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
 //appling middleware
-const createStoreWithMiddleware = applyMiddleware(epicMiddleware)(createStore);
+const createStoreWithMiddleware = applyMiddleware(epicMiddleware/*,logger()*/)(createStore);
 
 //creating store
 export let store = createStoreWithMiddleware(rootReducer)

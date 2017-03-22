@@ -17,19 +17,19 @@ export function ChatReducer(state = INITIAL_STATE, action: IAction) {
             return { ...state, loading: true };
 
         case ChatAction.GET_MESSAGE_ADDED:
-            var newTodos = Object.assign({}, state.messages);
-            newTodos[action.payload.key] = action.payload.val;
-            return { ...state, todos: newTodos, loading: false };
+            var combineMessages = Object.assign({}, state.messages);
+            combineMessages[action.payload.key] = action.payload.val;
+            return { ...state, messages: combineMessages, loading: false };
 
         case ChatAction.GET_MESSAGE_REMOVED:
-            var newTodos = Object.assign({}, state.messages);
-            delete newTodos[action.payload];
-            return { ...state, todos: newTodos, loading: false };
+            var combineMessages = Object.assign({}, state.messages);
+            delete combineMessages[action.payload];
+            return { ...state, messages: combineMessages, loading: false };
 
         case ChatAction.GET_MESSAGE_CHANGED:
-            var newTodos = Object.assign({}, state.messages);
-            newTodos[action.payload.key] = action.payload.val;
-            return { ...state, todos: newTodos, loading: false };
+            var combineMessages = Object.assign({}, state.messages);
+            combineMessages[action.payload.key] = action.payload.val;
+            return { ...state, messages: combineMessages, loading: false };
 
         default:
             return state;

@@ -29,26 +29,22 @@ class Chat extends Component<any, any> {
     }
 
     render() {
-        /*let messagesList = Object.keys(this.props.todos).map((key, index) => {
-            let val = this.props.todos[key];
+        let messagesList = Object.keys(this.props.messages).map((key, index) => {
+            let val = this.props.messages[key];
             return (
                 <li key={index}>
-                    <h3> {val.todo}</h3>
+                    <h3>{val.from}: {val.text}</h3>
                 </li>
             )
-        })*/
-        return (
-            <div>
-                <h2>Chat Bot</h2>
-                <ul>
-                    {/*{messagesList}*/}
-                </ul>
-
-                <ChatInput sendMessage={this.props.addMessage}></ChatInput>
-
-                {(this.props.loading) ? <p>Sending...</p> : ""}
-            </div>
-        )
+        })
+        return (<div>
+            <h2>Chat Bot</h2>
+            {(this.props.loading) ? <p>Loading...</p> : ""}
+            <ul>
+                {messagesList}
+            </ul>
+            <ChatInput sendMessage={this.props.addMessage}></ChatInput>
+        </div>)
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Chat)
