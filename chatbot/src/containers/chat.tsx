@@ -2,7 +2,9 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux'
 import { ChatAction } from '../store/action/chat'
+
 import { ChatInput } from '../components/chatInputForm';
+import { ChatMessagesList } from '../components/chatMessagesList';
 
 function mapStateToProps(state) {
     return {
@@ -29,22 +31,15 @@ class Chat extends Component<any, any> {
     }
 
     render() {
-        let messagesList = Object.keys(this.props.messages).map((key, index) => {
-            let val = this.props.messages[key];
-            return (
-                <li key={index}>
-                    <h3>{val.from}: {val.text}</h3>
-                </li>
-            )
-        })
-        return (<div>
-            <h2>Chat Bot</h2>
-            {(this.props.loading) ? <p>Loading...</p> : ""}
-            <ul>
-                {messagesList}
-            </ul>
-            <ChatInput sendMessage={this.props.addMessage}></ChatInput>
-        </div>)
+        return (
+            <div>
+                <h2>Chat Bot</h2>
+                {(this.props.loading) ? <p>Loading...</p> : ""}
+
+                <ChatMessagesList messages={this.props.messages}></ChatMessagesList>
+                <ChatInput sendMessage={this.props.addMessage}></ChatInput>
+            </div>
+        )
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Chat)
