@@ -1,9 +1,9 @@
 import * as firebase from 'firebase';
 var firebaseConfig = {
-    apiKey: "AIzaSyDspeNWtv6xycKzfsFA2mcVWxIYaKA1Mkk",
-    authDomain: "test-project-5a3f4.firebaseapp.com",
-    databaseURL: "https://test-project-5a3f4.firebaseio.com",
-    storageBucket: "test-project-5a3f4.appspot.com",
-    messagingSenderId: "523897901107"
+    apiKey: "AIzaSyAAcoWbpC3nmqfjx1l2BebjKcf2Psm4ARw",
+    authDomain: "chatbot-ai.firebaseapp.com",
+    databaseURL: "https://chatbot-ai.firebaseio.com",
+    storageBucket: "chatbot-ai.appspot.com",
+    messagingSenderId: "396950971695"
 }
 firebase.initializeApp(firebaseConfig);

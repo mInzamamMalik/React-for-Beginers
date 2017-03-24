@@ -6,7 +6,8 @@
     "clean": "rm -rf ./dist",
     "build:prod": "webpack -p --define process.env.NODE_ENV='\"production\"' --progress --colors",
     "serve": "webpack-dev-server --progress --inline --profile --colors --display-error-details --history-api-fallback true --open",
-    "start": "npm run clean && npm run serve"
+    "start": "npm run clean && npm run serve",
+    "deploy": "npm run build:prod && firebase deploy && firebase open hosting"
   },
   "author": "Yousuf Qutubuddin",
   "authorGithub": "https://github.com/uqutub",
