@@ -1,47 +1,30 @@
 var functions = require('firebase-functions');
-var apiai = require('apiai')("7f3251bd4aca4decb21d536f886e9f0b ");
-var request = require('request');
+var requestify = require('requestify');
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// })
-
-// Listens for new messages added to /messages/:pushId/original and creates an
-// uppercase version of the message to /messages/:pushId/uppercase
-exports.chatbot = functions.database.ref('/chatbot/messages/{pushId}/text')
+exports.chatbot = functions.database.ref('/chatbot/messages/{pushId}')
     .onWrite(event => {
-        // Grab the current value of what was written to the Realtime Database.
-        const snap = event.data;
-        const data = snap.val();
+        const data = event.data.val();
+        if (data.to != undefined && data.text != undefined && data.from == 'bot') {
+            console.log("no reply for bot message");
+            return 0;
+        }
+        const query = data.text;
+        console.log("you said: ", query);
 
-        var req = request
-            .get("https://api.github.com/users/malikasinger111/repos")
-            .on('response', function (response) {
-                console.log(response.statusCode) // 200
-                console.log(response.headers['content-type']) // 'image/png'
+        return requestify
+            .request('https://api.api.ai/api/query?v=20150910&query=' + query + '&lang=en&sessionId=898aae69-9d7d-4dd3-abeb-721ca2a44bb6&timezone=2017-03-24T21:10:33+0500', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer 7f3251bd4aca4decb21d536f886e9f0b'
+                }
             })
-
-
-        // var request = apiai.textRequest(data,{
-        //     sessionId: "some custom session id"
-        // });
-
-        // request.on('response', function (response) {
-        //     console.log("this is response of api.ai", response);
-        //     return event.data.ref.parent.parent.push(message);
-
-        // });
-
-        // request.on('error', function (error) {
-        //     console.error("this is error of api.ai", error);
-        // });
-
-        return Promise.all(req);
-
+            .then(function (response) {
+                const reply = response.getBody().result.fulfillment.speech;
+                console.log("reply is: ", reply);
+                return event.data.ref.parent.push({
+                    text: reply,
+                    from: "bot",
+                    to: "zia"
+                });
+            });
     });
-
-
-

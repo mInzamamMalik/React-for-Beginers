@@ -9,7 +9,7 @@ export class ChatInput extends Component<ChatInputProps, any> {
     submitHandle(e) {
         e.preventDefault();
         this.props.sendMessage({
-            from: "zia",
+            from: "Me",
             to: "bot",
             text: this.refs.newMessage["value"]
         });

@@ -14,7 +14,7 @@ export class ChatMessagesList extends Component<ChatMessagesListProps, any> {
                     <h3>{val.from}: {val.text}</h3>
                 </li>
             )
-        })
+        }).reverse();
 
         return <ul>{messagesList}</ul>
     }

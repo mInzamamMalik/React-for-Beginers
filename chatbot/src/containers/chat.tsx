@@ -34,10 +34,10 @@ class Chat extends Component<any, any> {
         return (
             <div>
                 <h2>Chat Bot</h2>
-                {(this.props.loading) ? <p>Loading...</p> : ""}
-
-                <ChatMessagesList messages={this.props.messages}></ChatMessagesList>
                 <ChatInput sendMessage={this.props.addMessage}></ChatInput>
+
+                {(this.props.loading) ? <p>Loading...</p> : ""}
+                <ChatMessagesList messages={this.props.messages}></ChatMessagesList>
             </div>
         )
     }
