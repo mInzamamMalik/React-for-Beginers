@@ -1,5 +1,6 @@
 var functions = require('firebase-functions');
 var requestify = require('requestify');
+var http = require('./helper');
 
 exports.chatbot = functions.database.ref('/chatbot/messages/{pushId}')
     .onWrite(event => {
@@ -28,3 +29,41 @@ exports.chatbot = functions.database.ref('/chatbot/messages/{pushId}')
                 });
             });
     });
+
+
+exports.helloWorld = functions.https.onRequest((request, response) => {
+
+    console.log("request: ", request);
+    console.log("response: ", response);
+
+    response.send("this is response");
+})
+
+
+exports.webhook = http.post((req, res) => {
+    console.log("this is body: ", req.body);
+    console.log("this is headers: ", req.headers);
+
+    var response = {
+        speech: "this is speech from firebase",
+        displayText: "this is displayText from firebase",
+        data: { "this": "is data from firebase" },
+        contextOut: [
+            {
+                "name": "weather",
+                "lifespan": 2,
+                "parameters": { "city": "Rome" }
+            }
+        ],
+        source: "this is source from firebase",
+        followupEvent: {
+            name: "signup",
+            data: { 
+                'givenname': "john",
+                'lastname': "john"
+             }
+        },
+    }
+    console.log("response: ", response);
+    res.json(response);
+});
