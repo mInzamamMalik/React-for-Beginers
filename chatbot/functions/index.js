@@ -1,7 +1,12 @@
 var functions = require('firebase-functions');
+var admin = require('firebase-admin');
+
 var http = require('./helper');
 var apiai = require('apiai');
 var app = apiai("f87d6ff5226e45b8aec8fb939e0ff38e");
+
+var defaultApp = admin.initializeApp(functions.config().firebase)
+const db = admin.database();
 
 
 exports.chatbot = functions.database.ref('/chatbot/messages/{pushId}')
@@ -83,27 +88,34 @@ exports.webhook = http.post((req, res) => {
 
             //do signup process here
             //then
-            res.send({
-                speech: "you are signed up",
-                contextOut: [
-                    {
-                        "name": "init",
-                        "lifespan": 0
-                    },
-                    {
-                        "name": "quiz",
-                        "lifespan": 5,
-                        "parameters": { "index": "1" }
-                    }
-                ],
-            })
+
+            var question = getQuestion(0).then(question => {
+                console.log("async got question: ", question);
+
+                res.send({
+                    speech: "you are signed up, first question is " + JSON.stringify(question),
+                    contextOut: [
+                        {
+                            "name": "init",
+                            "lifespan": 0
+                        },
+                        {
+                            "name": "quiz",
+                            "lifespan": 5,
+                            "parameters": { "index": "1" }
+                        }
+                    ],
+                })
+            });
             break;
 
         case "next-question":
 
             console.log("in next question params: ", body.result.contexts);
-
             var currentIndex = parseInt(body.result.contexts[0].parameters.index);
+            //collect answer option number
+
+
             res.send({
                 speech: "quest index " + (currentIndex + 1),
                 contextOut: [
@@ -122,8 +134,31 @@ exports.webhook = http.post((req, res) => {
             });
             break;
     }
-
-
-    console.log("response: ", response);
-    res.json(response);
 });
+
+
+function getQuestion(index) {
+    return new Promise((resolve, reject) => {
+
+        db.ref().child("chatbot/questions").once("value", (snapshot) => {
+
+            var data = snapshot.val();
+            console.log("data: ", data)
+
+            var keys = Object.keys(data);
+            console.log("keys: ", keys)
+
+            if (index >= keys.length || index < 0) {
+                resolve(-1)
+            };
+
+            var key = keys[index];
+            console.log("key: ", key)
+
+            console.log("question: ", data[key]);
+            resolve(data[key]);//return question object
+
+        })
+    });
+}
+
