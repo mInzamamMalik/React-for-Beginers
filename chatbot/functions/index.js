@@ -89,7 +89,7 @@ exports.webhook = http.post((req, res) => {
             //do signup process here
             //then
 
-            var question = getQuestion(0).then(question => {
+            getQuestion(0).then(question => {
                 console.log("async got question: ", question);
 
                 res.send({
@@ -102,7 +102,7 @@ exports.webhook = http.post((req, res) => {
                         {
                             "name": "quiz",
                             "lifespan": 5,
-                            "parameters": { "index": "1" }
+                            "parameters": { "index": "0" }
                         }
                     ],
                 })
@@ -114,18 +114,32 @@ exports.webhook = http.post((req, res) => {
             console.log("in next question params: ", body.result.contexts);
             var currentIndex = parseInt(body.result.contexts[0].parameters.index);
             //collect answer option number
+            getQuestion(currentIndex + 1).then(question => {
+                console.log("async got question: ", question);
 
-
-            res.send({
-                speech: "quest index " + (currentIndex + 1),
-                contextOut: [
-                    {
-                        "name": "quiz",
-                        "lifespan": 5,
-                        "parameters": { "index": currentIndex + 1 }
-                    }
-                ],
-            })
+                if (question == -1) {
+                    res.send({
+                        speech: "no more questions",
+                        contextOut: [
+                            {
+                                "name": "quiz",
+                                "lifespan": 0,
+                            }
+                        ],
+                    });
+                } else {
+                    res.send({
+                        speech: "question" + (currentIndex + 2) + ": " + JSON.stringify(question),
+                        contextOut: [
+                            {
+                                "name": "quiz",
+                                "lifespan": 5,
+                                "parameters": { "index": currentIndex + 1 }
+                            }
+                        ],
+                    });
+                }
+            });
             break;
 
         default:
