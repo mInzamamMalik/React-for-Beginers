@@ -89,37 +89,46 @@ exports.webhook = http.post((req, res) => {
             //do signup process here
             //then
 
-            getQuestion(0).then(question => {
-                console.log("async got question: ", question);
 
-                res.send({
-                    speech: "you are signed up, first question is " + JSON.stringify(question),
-                    contextOut: [
-                        {
-                            "name": "init",
-                            "lifespan": 0
-                        },
-                        {
-                            "name": "quiz",
-                            "lifespan": 5,
-                            "parameters": { "index": "0" }
-                        }
-                    ],
-                })
-            });
+
+            res.send({
+                // speech: "you are signed up, first question is " + JSON.stringify(question),
+                speech: "you are signed up",
+                followupEvent: {
+                    "name": "start_quiz"
+                },
+                contextOut: [
+                    {
+                        "name": "init",
+                        "lifespan": 0
+                    },
+                    {
+                        "name": "quiz",
+                        "lifespan": 5,
+                        "parameters": { "index": "0" }
+                    }
+                ],
+            })
             break;
 
         case "next-question":
 
             console.log("in next question params: ", body.result.contexts);
             var currentIndex = parseInt(body.result.contexts[0].parameters.index);
+
+
             //collect answer option number
-            getQuestion(currentIndex + 1).then(question => {
+
+
+            getQuestion(currentIndex).then(question => {
                 console.log("async got question: ", question);
 
                 if (question == -1) {
                     res.send({
-                        speech: "no more questions",
+                        speech: "chal nikal bht hogya sawal jawab",
+                        followupEvent: {
+                            "name": "last_greetings"
+                        },
                         contextOut: [
                             {
                                 "name": "quiz",
@@ -129,7 +138,7 @@ exports.webhook = http.post((req, res) => {
                     });
                 } else {
                     res.send({
-                        speech: "question" + (currentIndex + 2) + ": " + JSON.stringify(question),
+                        speech: "question" + (currentIndex + 1) + ": " + JSON.stringify(question),
                         contextOut: [
                             {
                                 "name": "quiz",
