@@ -110,7 +110,7 @@ exports.webhook = http.post((req, res) => {
                         "lifespan": 5,
                         "parameters": {
                             "index": "0",
-                            "name": profile.name
+                            "name": "john"
                         }
                     }
                 ]
@@ -124,13 +124,13 @@ exports.webhook = http.post((req, res) => {
                 password: body.result.parameters.password,
             }
 
-            res.send({
-                // speech: "you are signed up, first question is " + JSON.stringify(question),
-                speech: "you are signed up as " + profile.name,
-                followupEvent: {
-                    "name": "start_quiz"
-                },
-                contextOut: [
+                res.send({
+                    // speech: "you are signed up, first question is " + JSON.stringify(question),
+                    speech: "you are signed up as " + profile.name,
+                    followupEvent: {
+                        "name": "start_quiz"
+                    },
+                    contextOut: [
                     {
                         "name": "init",
                         "lifespan": 0
