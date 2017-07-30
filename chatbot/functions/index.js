@@ -82,18 +82,21 @@ exports.webhook = http.post((req, res) => {
     var body = req.body;
 
     console.log("action: ", body.result.action);
+
     switch (body.result.action) {
 
-        case "do-signup":
+        case "do-login":
 
-            //do signup process here
-            //then
-
-
-
+            let profile = {
+                roll: body.result.parameters.roll,
+                password: body.result.parameters.password,
+            }
+            //do login process.then
             res.send({
-                // speech: "you are signed up, first question is " + JSON.stringify(question),
-                speech: "you are signed up",
+                // speech: "wrong credentials, let me know if this is your first time",
+                // with no followup event
+
+                speech: "you are Logged in as john",
                 followupEvent: {
                     "name": "start_quiz"
                 },
@@ -105,7 +108,40 @@ exports.webhook = http.post((req, res) => {
                     {
                         "name": "quiz",
                         "lifespan": 5,
-                        "parameters": { "index": "0" }
+                        "parameters": {
+                            "index": "0",
+                            "name": profile.name
+                        }
+                    }
+                ]
+            })
+            break;
+        case "do-signup":
+
+            profile = {
+                name: body.result.parameters.name,
+                roll: body.result.parameters.roll,
+                password: body.result.parameters.password,
+            }
+
+            res.send({
+                // speech: "you are signed up, first question is " + JSON.stringify(question),
+                speech: "you are signed up as " + profile.name,
+                followupEvent: {
+                    "name": "start_quiz"
+                },
+                contextOut: [
+                    {
+                        "name": "init",
+                        "lifespan": 0
+                    },
+                    {
+                        "name": "quiz",
+                        "lifespan": 5,
+                        "parameters": {
+                            "index": "0",
+                            "name": profile.name
+                        }
                     }
                 ],
             })
