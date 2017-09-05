@@ -21,10 +21,10 @@ module.exports = {
     },
 
     module: {
-        preLoaders: [
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { test: /\.js$/, loader: "source-map-loader" }
-        ],
+        // preLoaders: [
+        //     // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+        //     { test: /\.js$/, loader: "source-map-loader" }
+        // ],
 
         loaders: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
