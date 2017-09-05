@@ -3,7 +3,7 @@ var admin = require('firebase-admin');
 
 var http = require('./helper');
 var apiai = require('apiai');
-var app = apiai("f87d6ff5226e45b8aec8fb939e0ff38e");
+var app = apiai("f87d6ff5226e45b8aec8fb939e0ff38e"); //api.ai agent name = Ada
 
 var defaultApp = admin.initializeApp(functions.config().firebase)
 const db = admin.database();
@@ -195,7 +195,7 @@ exports.webhook = http.post((req, res) => {
     }
 });
 
-
+// TODO: move it in 'db functions'
 function getQuestion(index) {
     return new Promise((resolve, reject) => {
 
